@@ -11,6 +11,7 @@ import update from './routes/update';
 import deletee from './routes/deletee';
 import mongoose from 'mongoose';
 import Schema  from './model/Schema';
+import fs from 'fs';
 let app = express();
 
 
@@ -20,7 +21,10 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+let accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})
+
+// setup the logger
+app.use(logger('combined', {stream: accessLogStream}))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
